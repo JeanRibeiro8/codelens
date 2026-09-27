@@ -1,76 +1,382 @@
-# React + TypeScript + Vite
+# CodeLens
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Static Code Analysis Tool for JavaScript & TypeScript
 
-Currently, two official plugins are available:
+CodeLens is a developer tool that analyzes JavaScript and TypeScript source code and presents practical information about its structure and quality.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The application parses source code using the **TypeScript Compiler API**, traverses its **Abstract Syntax Tree (AST)**, calculates code metrics, detects potential issues, and generates improvement suggestions.
 
-## React Compiler
+CodeLens also includes an optional AI analysis layer that uses the static analysis results to provide additional explanations and recommendations.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+> **Portfolio focus:** React, TypeScript, AST-based static analysis, code quality concepts, and API integration.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* JavaScript and TypeScript code analysis
+* AST-based source code parsing
+* Code quality score
+* Lines of code detection
+* Function counting
+* Variable counting
+* Conditional structure counting
+* Cyclomatic complexity analysis
+* Potential issue detection
+* Issue severity classification
+* Improvement suggestions
+* AI-assisted explanations and recommendations
+* Interactive analysis results
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ⚙️ How It Works
 
+CodeLens follows a two-layer analysis approach.
+
+```text
+User
+  ↓
+Paste JavaScript / TypeScript Code
+  ↓
+Select Language
+  ↓
+Analyze Code
+  ↓
+Parse Source Code
+  ↓
+Build Abstract Syntax Tree (AST)
+  ↓
+Traverse AST
+  ↓
+Calculate Metrics
+  ↓
+Detect Potential Issues
+  ↓
+Generate Suggestions
+  ↓
+Display Analysis Results
+  ↓
+Optional AI Analysis
+  ↓
+Backend API
+  ↓
+OpenAI API
+  ↓
+Additional Explanations & Recommendations
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+The core analysis happens locally through the static analysis engine.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The AI layer is used as an additional explanation and recommendation system rather than replacing the static analysis.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
 
+## 🔍 Static Analysis
+
+CodeLens uses the **TypeScript Compiler API** to parse the submitted source code.
+
+The source code is converted into an **Abstract Syntax Tree (AST)**, which allows the application to inspect the structure of the program instead of relying only on text-based searches.
+
+The analyzer traverses the AST to identify code structures and calculate metrics used by the application.
+
+The analysis includes concepts such as:
+
+* Functions
+* Variables
+* Conditional structures
+* Function parameters
+* Function length
+* `console.log()` calls
+* Cyclomatic complexity
+
+This approach allows CodeLens to analyze the structure of JavaScript and TypeScript code programmatically.
+
+---
+
+## 📊 Metrics
+
+| Metric            | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| **Lines**         | Number of lines detected in the source code             |
+| **Functions**     | Number of functions detected                            |
+| **Variables**     | Number of variable declarations detected                |
+| **Conditions**    | Number of conditional/control-flow structures detected  |
+| **Complexity**    | Cyclomatic complexity calculated from the analyzed code |
+| **Quality Score** | Score based on the issues identified during analysis    |
+| **Issues**        | Number of potential code quality issues detected        |
+
+These metrics provide a quick overview of the structure and potential quality concerns within the analyzed source code.
+
+---
+
+## 🚨 Issue Detection
+
+CodeLens analyzes the AST for specific patterns that may indicate potential code quality problems.
+
+Examples include:
+
+* `console.log()` usage
+* Empty functions
+* Functions with too many parameters
+* Functions that are too long
+* High cyclomatic complexity
+
+Detected issues can be presented with different severity levels depending on the rule.
+
+The purpose is not to replace a complete production-grade linter, but to demonstrate how source code can be programmatically inspected and evaluated.
+
+---
+
+## 🤖 AI Analysis
+
+CodeLens includes an additional AI-powered analysis layer.
+
+The static analyzer first processes the source code and generates structured analysis results. These results can then be sent to a backend endpoint for additional AI-based explanations and recommendations.
+
+```text
+Static Analysis
+      ↓
+Analysis Results
+      ↓
+Backend Endpoint
+      ↓
+OpenAI API
+      ↓
+AI Explanation
+      ↓
+Recommendations
+      ↓
+CodeLens UI
 ```
-# codelens
+
+The AI layer is designed to complement the static analysis.
+
+The core metrics and issue detection are generated by CodeLens itself rather than by the AI.
+
+> **Security:** API credentials should remain server-side and should never be exposed in the frontend application.
+
+---
+
+## 🧩 Architecture
+
+The project separates the code analysis process from the user interface.
+
+```text
+React Interface
+      │
+      ├── Code Input
+      ├── Language Selection
+      └── Analysis Results
+              │
+              ▼
+       Static Analyzer
+              │
+              ├── Parser
+              ├── AST Traversal
+              ├── Metrics
+              ├── Issue Detection
+              ├── Complexity
+              └── Suggestions
+              │
+              ▼
+        Analysis Result
+              │
+              └── Optional AI Analysis
+```
+
+This structure makes the analysis engine independent from the presentation layer and provides a clear separation between local static analysis and external AI processing.
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology                      | Purpose                                          |
+| ------------------------------- | ------------------------------------------------ |
+| **React**                       | Building the application interface               |
+| **TypeScript**                  | Type-safe application and analysis logic         |
+| **Vite**                        | Development environment and build tooling        |
+| **TypeScript Compiler API**     | Parsing and traversing source code               |
+| **AST (Abstract Syntax Tree)**  | Representing and analyzing source code structure |
+| **CSS**                         | Application styling and layout                   |
+| **OpenAI API**                  | Additional AI explanations and recommendations   |
+| **Vercel Serverless Functions** | Backend layer for the AI integration             |
+
+---
+
+## 🧠 What I Practiced
+
+### React
+
+* Component-based architecture
+* State management
+* Conditional rendering
+* Handling user input
+* Rendering analysis results
+
+### TypeScript
+
+* Interfaces and types
+* Typed analysis data
+* Structured application logic
+* Type-safe React development
+
+### Static Code Analysis
+
+* TypeScript Compiler API
+* Abstract Syntax Trees
+* AST traversal
+* Source code inspection
+* Code metrics
+* Cyclomatic complexity
+* Rule-based issue detection
+
+### API Integration
+
+* Frontend-to-backend communication
+* Sending structured analysis data
+* API response handling
+* Integrating an external AI service
+* Keeping API credentials server-side
+
+---
+
+## 📁 Project Structure
+
+The project follows a frontend structure with a dedicated analysis layer and backend API integration.
+
+```text
+codelens/
+├── api/
+│   └── analyze.ts
+├── src/
+│   ├── analyzer/
+│   │   ├── analyze.ts
+│   │   ├── parser.ts
+│   │   ├── quality.ts
+│   │   ├── suggestions.ts
+│   │   └── types.ts
+│   ├── App.tsx
+│   ├── App.css
+│   └── index.css
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+### `src/analyzer/`
+
+Contains the core static analysis logic responsible for parsing source code, traversing the AST, calculating metrics, detecting issues, and generating suggestions.
+
+### `api/`
+
+Contains the backend endpoint used for the optional AI analysis layer.
+
+### `App.tsx`
+
+Contains the main application interface and connects the user interaction with the analysis functionality.
+
+### `App.css` / `index.css`
+
+Contain the application's styling and layout rules.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd codelens
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+The application will then be available through the local development URL provided by Vite.
+
+### 4. Build for production
+
+```bash
+npm run build
+```
+
+### 5. Preview the production build
+
+```bash
+npm run preview
+```
+
+---
+
+## 🔐 Environment Variables
+
+If the AI integration requires an API key, the credential should be configured through the backend/serverless environment rather than exposed in the frontend.
+
+Do not commit secret API keys to the repository.
+
+---
+
+## 🎯 Project Purpose
+
+CodeLens was created as a practical frontend project focused on understanding how developer tools can analyze source code programmatically.
+
+The project combines several concepts that are useful in modern frontend development:
+
+* React application architecture
+* TypeScript
+* AST-based programming
+* Static code analysis
+* Code quality concepts
+* Cyclomatic complexity
+* Backend API integration
+* AI-assisted developer tooling
+
+The main goal is to understand how these technologies work together in a complete application rather than building an isolated coding exercise.
+
+---
+
+## 🔮 Future Improvements
+
+Possible future improvements include:
+
+* More static analysis rules
+* Additional code quality metrics
+* More detailed issue explanations
+* Support for additional JavaScript/TypeScript patterns
+* More advanced code visualization
+* Expanded AI analysis
+* More detailed analysis reports
+
+These are future ideas and are not part of the current implementation.
+
+---
+
+## 👤 Author
+
+**Jean Ribeiro**
+
+Junior Frontend Developer focused on React, TypeScript, and modern web development.
+
+* **GitHub:** [JeanRibeiro8](https://github.com/JeanRibeiro8)
+* **LinkedIn:** [Jean Ribeiro](https://www.linkedin.com/in/jean-ribeiro-9a3792267/)
+* **Portfolio:** [jeanribeiro8.github.io/JeanRibeiro](https://jeanribeiro8.github.io/JeanRibeiro/)
+* **Email:** [jeanrsantos10@gmail.com](mailto:jeanrsantos10@gmail.com)
+
+---
+
+<div align="center">
+
+**Built to explore static analysis, TypeScript, React, and developer tooling.**
+
+</div>
